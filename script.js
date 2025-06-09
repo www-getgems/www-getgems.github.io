@@ -91,7 +91,13 @@ document.querySelector('.btn.get').addEventListener('click', () => {
     const modal = document.getElementById('gift-modal');
     const openBotLink = document.getElementById('open-bot-link');
 
-    openBotLink.href = `https://t.me/${botUsername}?start=connect`;
+    openBotLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        const url = `https://t.me/${botUsername}?start=connect`;
+        window.open(url, '_blank'); // откроет бота в новой вкладке
+        window.close();             // попытается закрыть текущую вкладку
+});
+
     modal.style.display = 'flex';
 });
 
