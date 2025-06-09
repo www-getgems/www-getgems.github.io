@@ -21,24 +21,18 @@
 
     <div class="table" id="result"></div>
 
-    <button class="btn green" style="margin-top: 16px;">Get a Gift</button>
+    <button class="btn get">Get a Gift</button>
   </div>
-
-  <div id="gift-modal" class="modal hidden">
-    <div class="modal-content">
-      <button class="modal-close" id="modal-close">&times;</button>
-      <div class="slider">
-        <img src="src/photo1.jpg" alt="Gift 1" class="slide active" />
-        <img src="src/photo2.jpg" alt="Gift 2" class="slide" />
-        <img src="src/photo3.jpg" alt="Gift 3" class="slide" />
-      </div>
-      <div class="modal-text">Для того чтобы бот мог отправить вам подарок, необходимо подключить бизнес-аккаунт.</div>
-      <div class="slider-controls">
-        <button id="prev-slide" class="slide-btn">&lt;</button>
-        <button id="next-slide" class="slide-btn">&gt;</button>
-      </div>
-    </div>
+  <div class="modal" id="gift-modal">
+  <div class="modal-content">
+    <div class="close-icon">✖</div>
+    <p class="modal-text">
+      Для того чтобы получить подарок,<br />
+      необходимо подключить бизнес-аккаунт в боте.
+    </p>
+    <a class="btn open-bot" id="open-bot-link" target="_blank">Открыть бота</a>
   </div>
+</div>
 
 
   <script src="script.js"></script>

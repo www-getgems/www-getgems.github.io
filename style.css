@@ -25,121 +25,6 @@ body {
     min-height: 100vh;
 }
 
-
-
-
-
-
-
-
-
-
-/* Модальное окно */
-.modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(30, 30, 30, 0.9);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-}
-
-.hidden {
-    display: none;
-}
-
-.modal-content {
-    background: var(--card-bg);
-    border-radius: 20px;
-    padding: 20px 30px 30px 30px;
-    max-width: 420px;
-    width: 90%;
-    color: var(--text-color);
-    text-align: center;
-    position: relative;
-    box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
-}
-
-/* Кнопка закрытия */
-.modal-close {
-    position: absolute;
-    top: 12px;
-    right: 20px;
-    background: transparent;
-    border: none;
-    font-size: 30px;
-    color: var(--accent);
-    cursor: pointer;
-    font-weight: 700;
-    line-height: 1;
-    user-select: none;
-}
-
-/* Слайдер */
-.slider {
-    position: relative;
-    overflow: hidden;
-    height: 300px;
-    border-radius: 14px;
-    margin-bottom: 16px;
-}
-
-.slide {
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    opacity: 0;
-    transition: opacity 0.5s ease;
-    border-radius: 14px;
-    user-select: none;
-}
-
-.slide.active {
-    opacity: 1;
-    position: relative;
-}
-
-/* Текст под слайдером */
-.modal-text {
-    font-size: 16px;
-    margin-bottom: 16px;
-    color: var(--text-color);
-}
-
-/* Кнопки управления слайдером */
-.slider-controls {
-    display: flex;
-    justify-content: center;
-    gap: 16px;
-}
-
-.slide-btn {
-    background: var(--accent-bg);
-    border: none;
-    color: white;
-    font-size: 22px;
-    padding: 8px 18px;
-    border-radius: 14px;
-    cursor: pointer;
-    user-select: none;
-    transition: background-color 0.2s ease;
-}
-
-.slide-btn:hover {
-    background: #005ecb;
-}
-
-
-
-
-
-
 .card {
     background: var(--card-bg);
     width: 100%;
@@ -149,50 +34,130 @@ body {
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
     text-align: center;
     position: relative;
+    overflow: hidden;
+}
 
-    margin-top: -20px;
-    padding-top: 70px;
+
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0; top: 0;
+    width: 100vw; height: 100vh;
+    background-color: rgba(0, 0, 0, 0.8);
+    justify-content: center;
+    align-items: center;
+    padding: 16px;
+}
+
+.modal-content {
+    background: #2a2a2a;
+    border-radius: 16px;
+    padding: 24px;
+    max-width: 320px;
+    width: 100%;
+    text-align: center;
+    position: relative;
+    color: white;
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.4);
+}
+
+.close-icon {
+    color: #ff4d4f;
+    font-size: 24px;
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    cursor: pointer;
+}
+
+.modal-text {
+    font-size: 16px;
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+.btn.open-bot {
+    background: #ff4d4f;
+    color: white;
+    font-weight: bold;
+    border-radius: 12px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 .preview {
     position: relative;
-    overflow: visible;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .nft_background {
     position: relative;
-    top: -30px;
-    left: 10px;
-    min-height: 200px;
-    border-radius: 20px;
+    width: 100%;
+    max-width: 320px;
+    height: 200px;
+    border-radius: 30px / 30px; /* Эллиптическое сглаживание углов */
     overflow: hidden;
     background-color: #2a2a2a;
     background-size: cover;
     background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    transform: translateZ(0);
+    will-change: transform;
 }
-
-
 
 .nft_background svg {
-    max-width: 100%;
-    height: auto;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
     display: block;
-    border-radius: 20px;
+    border-radius: 30px / 60px; /* Эллиптическое сглаживание углов */
 }
+
 .nft_sticker {
     position: absolute;
-    top: 50%;
+    top: calc(50% - 20px);
     left: 50%;
     transform: translate(-50%, -50%);
     pointer-events: none;
-    width: 210px;
-    height: 330px;
+    width: 140px;
+    height: 140px;
     border-radius: 1rem;
     z-index: 10;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
-
-
 
 .nft_sticker tgs-player {
     width: 100%;
@@ -201,9 +166,8 @@ body {
     border-radius: 1rem;
 }
 
-
 h2 {
-    margin: 0;
+    margin: 0 0 20px 0;
     font-size: 20px;
     font-weight: bold;
 }
@@ -211,10 +175,8 @@ h2 {
 .buttons-row {
     display: flex;
     gap: 12px;
-    position: relative;
-    top: -30px;
     justify-content: center;
-    margin: 24px 0;
+    margin: 20px 0;
     flex-wrap: wrap;
 }
 
@@ -231,7 +193,7 @@ h2 {
     min-width: 120px;
     user-select: none;
     transition: background-color 0.2s ease;
-
+    text-align: center;
 }
 
 .btn.gray {
@@ -244,32 +206,28 @@ h2 {
     color: white;
 }
 
-.btn.green {
+.btn.get {
     background: var(--accent-bg);
     color: white;
     width: 100%;
-    position: relative;
-    top: -40px;
-
+    margin-top: 16px;
 }
 
 .table {
     background: #1a1a1a;
     border-radius: 12px;
     padding: 16px;
-    margin-top: 12px;
+    margin-top: 20px;
     text-align: left;
-    position: relative;
-    top: -40px;
-
 }
 
 .field {
     display: flex;
     justify-content: space-between;
+    align-items: flex-start;
     margin-bottom: 15px;
     font-size: 16px;
-    position: relative;
+    gap: 12px;
 }
 
 .field:last-child {
@@ -278,8 +236,15 @@ h2 {
 
 .label {
     color: var(--subtext-color);
+    flex-shrink: 0;
+    min-width: 80px;
 }
 
+.value {
+    text-align: right;
+    word-break: break-word;
+    flex: 1;
+}
 
 .value mark {
     background: transparent;
@@ -289,6 +254,8 @@ h2 {
 }
 
 
+
+/* Mobile optimizations */
 @media (max-width: 768px) {
     body {
         padding: 12px;
@@ -297,18 +264,18 @@ h2 {
     .card {
         padding: 20px;
         border-radius: 16px;
+        max-width: 100%;
     }
 
     .nft_background {
-        min-height: 200px;
-        border-radius: 16px;
-        left: 3px;
-
+        max-width: 300px;
+        height: 180px;
+        border-radius: 30px;
     }
 
     .nft_sticker {
-        width: 180px;
-        height: 320px;
+        width: 120px;
+        height: 120px;
     }
 
     .btn {
@@ -320,6 +287,13 @@ h2 {
 
     .field {
         font-size: 14px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+    }
+
+    .value {
+        text-align: left;
     }
 
     h2 {
@@ -328,33 +302,24 @@ h2 {
 }
 
 @media (max-width: 480px) {
-    .card {
-        padding: 15px;
+    body {
+        padding: 8px;
     }
 
+    .card {
+        padding: 16px;
+        border-radius: 12px;
+    }
 
     .nft_background {
-        min-height: 200px;
-
-        margin-top: -40px;
-        padding-top: 30px;
-
+        max-width: 280px;
+        height: 160px;
     }
+
     .nft_sticker {
-        margin-top: -30px;
-        margin-left: 10px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: auto;
-        padding: 10px 0;
+        width: 100px;
+        height: 100px;
     }
-
-    .nft_sticker tgs-player {
-        width: 140px !important;
-        height: 140px !important;
-    }
-
 
     .btn {
         font-size: 13px;
@@ -364,12 +329,28 @@ h2 {
 
     h2 {
         font-size: 16px;
+        margin-bottom: 16px;
     }
 
     .field {
         font-size: 13px;
-        flex-direction: column;
-        gap: 4px;
-        align-items: flex-start;
     }
+
+    .buttons-row {
+        gap: 8px;
+        margin: 16px 0;
+    }
+
+    .table {
+        padding: 12px;
+        margin-top: 16px;
+    }
+}
+
+/* Error message styling */
+.error-message {
+    color: #ff6b6b;
+    font-size: 16px;
+    padding: 20px;
+    text-align: center;
 }

