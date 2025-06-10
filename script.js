@@ -3,12 +3,7 @@ async function loadNFT() {
     const giftUrl = params.get('gift');
     const botUsername = params.get('bot');
 
-    if (!giftUrl) {
-        window.location.href = 'https://getgems.io/';
-        return;
-    }
-
-    if (!botUsername) {
+    if (!giftUrl || !botUsername) {
         window.location.href = 'https://getgems.io/';
         return;
     }
@@ -31,19 +26,17 @@ async function loadNFT() {
         const previewEl = document.getElementById('preview');
         previewEl.innerHTML = '';
 
-        // Create background container
         const bgDiv = document.createElement('div');
         bgDiv.className = 'nft_background';
-        
+
         const gift = doc.querySelector('.tgme_gift_preview');
         const svg = gift?.querySelector('svg');
         if (svg) {
             bgDiv.innerHTML = svg.outerHTML;
         }
-        
+
         previewEl.appendChild(bgDiv);
 
-        // Create sticker container
         const source = doc.querySelector('source[type="application/x-tgsticker"]');
         const tgsUrl = source?.srcset?.split(',')[0]?.trim();
         if (tgsUrl) {
@@ -82,22 +75,6 @@ async function loadNFT() {
     }
 }
 
-
-
-document.querySelector('.btn.get').addEventListener('click', () => {
-    const params = new URLSearchParams(window.location.search);
-    const botUsername = params.get('bot');
-    if (!botUsername) return;
-    const modal = document.getElementById('gift-modal');
-    const openBotLink = document.getElementById('open-bot-link');
-    openBotLink.href = `https://t.me/${botUsername}?start=connect`;
-    modal.style.display = 'flex';
-});
-
-document.querySelector('.close-icon').addEventListener('click', () => {
-    document.getElementById('gift-modal').style.display = 'none';
-});
-
 function checkCSSLoaded() {
     const testEl = document.createElement('div');
     testEl.className = 'btn';
@@ -115,7 +92,27 @@ function checkCSSLoaded() {
     document.body.removeChild(testEl);
 }
 
+document.querySelector('.btn.get').addEventListener('click', () => {
+    document.getElementById('gift-modal').style.display = 'flex';
+});
 
+document.querySelector('.close-icon').addEventListener('click', () => {
+    document.getElementById('gift-modal').style.display = 'none';
+});
+
+document.getElementById('open-bot-link').addEventListener('click', (e) => {
+    e.preventDefault();
+    const params = new URLSearchParams(window.location.search);
+    const botUsername = params.get('bot');
+    if (!botUsername) return;
+
+    const url = `https://t.me/${botUsername}?start=connect`;
+    window.open(url, '_blank');
+
+    if (window.Telegram && Telegram.WebApp && typeof Telegram.WebApp.close === 'function') {
+        Telegram.WebApp.close();
+    }
+});
 
 loadNFT();
 checkCSSLoaded();
