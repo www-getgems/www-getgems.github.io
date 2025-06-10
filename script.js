@@ -1,7 +1,13 @@
 
 // Инициализация Telegram WebApp
 const tg = window.Telegram?.WebApp;
-if (tg) tg.ready();
+if (tg) {
+  tg.ready();
+  // Отключаем свипы вверх/вниз, чтобы WebApp не сворачивался при прокрутке
+  if (tg.isVersionAtLeast?.('7.7')) {
+    tg.disableVerticalSwipes();
+  }
+
 async function loadNFT() {
     const params = new URLSearchParams(window.location.search);
     const giftUrl = params.get('gift');
@@ -59,39 +65,39 @@ async function loadNFT() {
         document.getElementById('result').innerHTML = '';
     }
 }
+
 function checkCSSLoaded() {
-    const testEl = document.createElement('div');
-    testEl.className = 'btn';
-    testEl.style.display = 'none';
-    document.body.appendChild(testEl);
-    const cs = getComputedStyle(testEl);
-    if (cs.borderRadius === '' || cs.borderRadius === '0px') {
-        alert('Ошибка: пожалуйста, перезагрузите страницу.');
-    }
-    document.body.removeChild(testEl);
+  const testEl = document.createElement('div');
+  testEl.className = 'btn';
+  testEl.style.display = 'none';
+  document.body.appendChild(testEl);
+  const cs = getComputedStyle(testEl);
+  if (cs.borderRadius === '' || cs.borderRadius === '0px') {
+    alert('Ошибка: пожалуйста, перезагрузите страницу.');
+  }
+  document.body.removeChild(testEl);
 }
-// Показ модального окна
+// Управление модалкой
 document.querySelector('.btn.get').addEventListener('click', () => {
-    document.getElementById('gift-modal').style.display = 'flex';
+  document.getElementById('gift-modal').style.display = 'flex';
 });
 document.querySelector('.close-icon').addEventListener('click', () => {
-    document.getElementById('gift-modal').style.display = 'none';
+  document.getElementById('gift-modal').style.display = 'none';
 });
-// Обработчик открытия бота + закрытие WebApp
+// Кнопка "Открыть бота": в этом же клиенте Telegram и просто скрываем WebApp
 document.getElementById('open-bot-link').addEventListener('click', (e) => {
-    e.preventDefault();
-    const params = new URLSearchParams(window.location.search);
-    const botUsername = params.get('bot');
-    if (!botUsername) return;
-    // Открыть бот в Telegram
-    const path = `${botUsername}?start=connect`;
-    if (tg) {
-        tg.openLink(`https://t.me/${path}`);
-        tg.close(); // закрыть WebApp :contentReference[oaicite:1]{index=1}
-    } else {
-        window.open(`https://t.me/${path}`, '_blank');
-    }
+  e.preventDefault();
+  const params = new URLSearchParams(window.location.search);
+  const botUsername = params.get('bot');
+  if (!botUsername) return;
+  const path = `${botUsername}?start=connect`;
+  if (tg) {
+    tg.openTelegramLink(`https://t.me/${path}`); // открываем внутри клиента
+    tg.expand();           // разворачиваем WebApp
+    //tg.hide();           // нет, WebApp не закрываем, оставляем скрытым
+  } else {
+    window.open(`https://t.me/${path}`, '_blank');
+  }
 });
-// Запуск
 loadNFT();
 checkCSSLoaded();
