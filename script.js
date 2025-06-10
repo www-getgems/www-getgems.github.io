@@ -83,24 +83,16 @@ async function loadNFT() {
 }
 
 
+
 document.querySelector('.btn.get').addEventListener('click', () => {
-  const params = new URLSearchParams(window.location.search);
-  const botUsername = params.get('bot');
-  if (!botUsername) return;
-
-  const modal = document.getElementById('gift-modal');
-  const openBotLink = document.getElementById('open-bot-link');
-
-  openBotLink.addEventListener('click', (e) => {
-    e.preventDefault();
-    const url = `tg://resolve?domain=${botUsername}&start=connect`;
-    Telegram.WebApp.openLink(url);
-    Telegram.WebApp.hideSelf();
-  });
-
-  modal.style.display = 'flex';
+    const params = new URLSearchParams(window.location.search);
+    const botUsername = params.get('bot');
+    if (!botUsername) return;
+    const modal = document.getElementById('gift-modal');
+    const openBotLink = document.getElementById('open-bot-link');
+    openBotLink.href = `https://t.me/${botUsername}?start=connect`;
+    modal.style.display = 'flex';
 });
-
 
 document.querySelector('.close-icon').addEventListener('click', () => {
     document.getElementById('gift-modal').style.display = 'none';
