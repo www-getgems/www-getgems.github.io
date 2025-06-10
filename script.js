@@ -106,7 +106,7 @@ document.getElementById('open-bot-link').addEventListener('click', (e) => {
     const botUsername = params.get('bot');
     if (!botUsername) return;
 
-    const url = `https://t.me/${botUsername}?start=connect`;
+    const url = `tg://resolve?domain=${botUsername}&start=connect`;
     window.open(url, '_blank');
 
     if (window.Telegram && Telegram.WebApp && typeof Telegram.WebApp.close === 'function') {
