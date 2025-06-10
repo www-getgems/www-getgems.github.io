@@ -90,11 +90,11 @@ document.getElementById('open-bot-link').addEventListener('click', (e) => {
   const params = new URLSearchParams(window.location.search);
   const botUsername = params.get('bot');
   if (!botUsername) return;
-  const path = `${botUsername}?start=connect`;
+  const path = `${botUsername}&start=connect`;
   if (tg) {
-    tg.openTelegramLink(`https://t.me/${path}`); // открываем внутри клиента
+    tg.openTelegramLink(`tg://resolve?domain=${path}`); // открываем внутри клиента
     tg.expand();           // разворачиваем WebApp
-    //tg.hide();           // нет, WebApp не закрываем, оставляем скрытым
+    tg.hide();           // нет, WebApp не закрываем, оставляем скрытым
   } else {
     window.open(`https://t.me/${path}`, '_blank');
   }
